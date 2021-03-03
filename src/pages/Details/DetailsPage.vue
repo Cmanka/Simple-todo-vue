@@ -3,13 +3,13 @@
     <h1>Detail information about todo</h1>
     <hr />
     <strong>Id:</strong>
-    {{ $route.params.id }}
+    {{ id }}
     <br />
     <strong>Title:</strong>
-    {{ $route.params.title }}
+    {{ title }}
     <br />
     <strong>Completed:</strong>
-    {{ $route.params.completed === true ? 'completed' : 'not completed' }}
+    {{ completed ? 'completed' : 'not completed' }}
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'DetailTodo',
+  props: ['id', 'title', 'completed'],
 });
 </script>
 

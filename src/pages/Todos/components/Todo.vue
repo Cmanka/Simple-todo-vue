@@ -4,7 +4,7 @@
       <input
         type="checkbox"
         :checked="todo?.completed"
-        v-on:change="$emit('toggle-todo', todo?.id)"
+        v-on:change="$emit('toggle-todo', todo.id)"
       />
       <span v-bind:class="{ done: todo?.completed }">{{ todo?.title }}</span>
       <button v-on:click="$emit('remove-todo', todo?.id)">Remove</button>

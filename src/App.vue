@@ -4,13 +4,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import Header from './core/components/Header.vue';
+import { auth } from './core/firebase/index';
 
 export default defineComponent({
-  name: 'App',
   components: {
     Header,
+  },
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+
+    onBeforeMount(() => {
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          router.replace('/login');
+        } else {
+          router.replace('/');
+          store.commit('auth/loginSuccess', user.uid);
+        }
+      });
+    });
   },
 });
 </script>

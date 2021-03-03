@@ -8,6 +8,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Todo } from '@/core/interfaces/ITodo';
+
 export default defineComponent({
   name: 'TodoForm',
   data: function () {

@@ -3,20 +3,25 @@
     <div class="header">
       <h1>Simple todo</h1>
     </div>
-    <TodoForm v-on:add-todo="addTodo" />
-    <div class="todo-list" v-if="todos.length">
-      <ul>
-        <TodoItem
-          v-for="todo of todos"
-          v-bind:todo="todo"
-          v-on:toggle-todo="toggleTodo"
-          v-on:remove-todo="removeTodo"
-          :key="todo.id"
-        />
-      </ul>
+    <TodoForm v-on:add-todo="onAddTodo" />
+    <div class="todo-list" v-if="isLoading">
+      <h2>List is loading...</h2>
     </div>
-    <div class="todo-list" v-else>
-      <h2>List is empty</h2>
+    <div v-else>
+      <div class="todo-list" v-if="allTodos.length">
+        <ul>
+          <TodoItem
+            v-for="todo of allTodos"
+            v-bind:todo="todo"
+            :key="todo.id"
+            v-on:remove-todo="onRemoveTodo"
+            v-on:toggle-todo="onToggleTodo"
+          />
+        </ul>
+      </div>
+      <div class="todo-list" v-else>
+        <h2>List is empty</h2>
+      </div>
     </div>
     <div class="footer">
       <h1>Footer</h1>
@@ -27,30 +32,35 @@
 import { defineComponent } from 'vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoItem from './components/Todo.vue';
+import { mapGetters, mapActions } from 'vuex';
 import { Todo } from '@/core/interfaces/ITodo';
+
 export default defineComponent({
   name: 'TodosPage',
   components: {
     TodoForm,
     TodoItem,
   },
-  data: function () {
-    return {
-      todos: [] as Todo[],
-    };
-  },
+  computed: mapGetters('todo', ['allTodos', 'isLoading']),
   methods: {
-    addTodo(todo: Todo) {
-      this.todos.push(todo);
+    ...mapActions('todo', [
+      'fetchTodos',
+      'addTodo',
+      'removeTodo',
+      'toggleTodo',
+    ]),
+    onAddTodo(todo: Todo) {
+      this.addTodo(todo);
     },
-    toggleTodo(id: string) {
-      this.todos = this.todos.map((todo: Todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      );
+    onRemoveTodo(todoId: string) {
+      this.removeTodo(todoId);
     },
-    removeTodo(id: string) {
-      this.todos = this.todos.filter((todo: Todo) => todo.id !== id);
+    onToggleTodo(todoId: string) {
+      this.toggleTodo(todoId);
     },
+  },
+  mounted() {
+    this.fetchTodos();
   },
 });
 </script>
