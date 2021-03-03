@@ -17,15 +17,17 @@
 
 <script style="ts">
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default defineComponent({
   name: 'Header',
   computed: mapGetters('auth', ['isLoading', 'getUser']),
   methods: {
     ...mapActions('auth', ['logout']),
+    ...mapMutations('user', ['userClearData']),
     onLogout() {
       this.logout();
+      this.userClearData();
     },
   },
 });
