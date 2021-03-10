@@ -3,18 +3,18 @@
     <label>
       <input
         type="checkbox"
-        :checked="todo?.completed"
+        :checked="todo.completed"
         v-on:change="$emit('toggle-todo', todo.id)"
       />
-      <span v-bind:class="{ done: todo?.completed }">{{ todo?.title }}</span>
-      <button v-on:click="$emit('remove-todo', todo?.id)">Remove</button>
+      <span v-bind:class="{ done: todo.completed }">{{ todo.title }}</span>
+      <button v-on:click="$emit('remove-todo', todo.id)">Remove</button>
       <router-link
         :to="{
-          name: 'TodoPage',
+          name: 'Todo',
           params: {
-            id: todo?.id,
-            title: todo?.title,
-            completed: todo?.completed,
+            id: todo.id,
+            title: todo.title,
+            completed: todo.completed,
           },
         }"
         >Detail</router-link
@@ -25,10 +25,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Todo } from '@/core/interfaces/ITodo';
+import { Todo } from '@/interfaces/ITodo';
 
 export default defineComponent({
-  name: 'TodoItem',
   props: {
     todo: {
       type: Object as PropType<Todo>,

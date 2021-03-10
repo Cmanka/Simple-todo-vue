@@ -7,8 +7,8 @@
 import { defineComponent, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import Header from './core/components/Header.vue';
-import { auth } from './core/firebase/index';
+import Header from '@/components/Header.vue';
+import { auth } from '@/firebase';
 
 export default defineComponent({
   components: {
@@ -23,8 +23,9 @@ export default defineComponent({
         if (!user) {
           router.replace('/login');
         } else {
-          router.replace('/');
-          store.commit('auth/loginSuccess', user.uid);
+          store.dispatch('user/getUser');
+          store.commit('auth/loginSuccess', { uid: user.uid });
+          store.dispatch('user/getAvatar');
         }
       });
     });
